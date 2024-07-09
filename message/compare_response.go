@@ -16,14 +16,16 @@ func readCompareResponse(bytes *Bytes) (ret CompareResponse, err error) {
 		err = LdapError{fmt.Sprintf("readCompareResponse:\n%s", err.Error())}
 		return
 	}
-	ret = CompareResponse(res)
+	ret = CompareResponse{
+		LDAPResult: res,
+	}
 	return
 }
 
 func (response CompareResponse) write(bytes *Bytes) int {
-	return LDAPResult(response).writeTagged(bytes, classApplication, TagCompareResponse)
+	return response.LDAPResult.writeTagged(bytes, classApplication, TagCompareResponse)
 }
 
 func (response CompareResponse) size() int {
-	return LDAPResult(response).sizeTagged(TagCompareResponse)
+	return response.LDAPResult.sizeTagged(TagCompareResponse)
 }

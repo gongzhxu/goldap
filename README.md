@@ -9,4 +9,4 @@ It still requires a lot of testing.
 
 # Usage example
 See my [LDAP proxy](https://github.com/lor00x/goldap-proxy).
-See [LDAP Server](https://github.com/vjeantet/ldapserver).
+See [LDAP Server](https://github.com/gongzhxu/ldapserver).

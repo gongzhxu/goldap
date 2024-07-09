@@ -11,7 +11,9 @@ func readModifyResponse(bytes *Bytes) (ret ModifyResponse, err error) {
 		err = LdapError{fmt.Sprintf("readModifyResponse:\n%s", err.Error())}
 		return
 	}
-	ret = ModifyResponse(res)
+	ret = ModifyResponse{
+		LDAPResult: res,
+	}
 	return
 }
 func (l LDAPResult) writeTagged(bytes *Bytes, class int, tag int) (size int) {
@@ -23,13 +25,13 @@ func (l LDAPResult) writeTagged(bytes *Bytes, class int, tag int) (size int) {
 //
 //        ModifyResponse ::= [APPLICATION 7] LDAPResult
 func (m ModifyResponse) write(bytes *Bytes) int {
-	return LDAPResult(m).writeTagged(bytes, classApplication, TagModifyResponse)
+	return m.LDAPResult.writeTagged(bytes, classApplication, TagModifyResponse)
 }
 
 //
 //        ModifyResponse ::= [APPLICATION 7] LDAPResult
 func (m ModifyResponse) size() int {
-	return LDAPResult(m).sizeTagged(TagModifyResponse)
+	return m.LDAPResult.sizeTagged(TagModifyResponse)
 }
 func (l *ModifyResponse) SetResultCode(code int) {
 	l.resultCode = ENUMERATED(code)

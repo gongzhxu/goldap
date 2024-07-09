@@ -57,6 +57,11 @@ type ProtocolOp interface {
 	write(*Bytes) int
 }
 
+type ProtocolResponse interface {
+	ProtocolOp
+	controls() Controls
+}
+
 //        MessageID ::= INTEGER (0 ..  maxInt)
 //
 type MessageID INTEGER
@@ -199,6 +204,7 @@ type MatchingRuleId LDAPString
 //             referral           [3] Referral OPTIONAL }
 //
 type LDAPResult struct {
+	Controls
 	resultCode        ENUMERATED
 	matchedDN         LDAPDN
 	diagnosticMessage LDAPString
@@ -542,6 +548,7 @@ const TagMatchingRuleAssertionDnAttributes = 4
 const TagSearchResultEntry = 4
 
 type SearchResultEntry struct {
+	Controls
 	objectName LDAPDN
 	attributes PartialAttributeList
 }
@@ -562,7 +569,9 @@ type SearchResultReference []URI
 //        SearchResultDone ::= [APPLICATION 5] LDAPResult
 const TagSearchResultDone = 5
 
-type SearchResultDone LDAPResult
+type SearchResultDone struct {
+	LDAPResult
+}
 
 //
 //        ModifyRequest ::= [APPLICATION 6] SEQUENCE {
@@ -599,7 +608,9 @@ var EnumeratedModifyRequestChangeOperation = map[ENUMERATED]string{
 //        ModifyResponse ::= [APPLICATION 7] LDAPResult
 const TagModifyResponse = 7
 
-type ModifyResponse LDAPResult
+type ModifyResponse struct {
+	LDAPResult
+}
 
 //
 //
@@ -631,7 +642,9 @@ type AttributeList []Attribute
 //        AddResponse ::= [APPLICATION 9] LDAPResult
 const TagAddResponse = 9
 
-type AddResponse LDAPResult
+type AddResponse struct {
+	LDAPResult
+}
 
 //
 //        DelRequest ::= [APPLICATION 10] LDAPDN
@@ -643,7 +656,9 @@ type DelRequest LDAPDN
 //        DelResponse ::= [APPLICATION 11] LDAPResult
 const TagDelResponse = 11
 
-type DelResponse LDAPResult
+type DelResponse struct {
+	LDAPResult
+}
 
 //
 //        ModifyDNRequest ::= [APPLICATION 12] SEQUENCE {
@@ -666,7 +681,9 @@ const TagModifyDNRequestNewSuperior = 0
 //        ModifyDNResponse ::= [APPLICATION 13] LDAPResult
 const TagModifyDNResponse = 13
 
-type ModifyDNResponse LDAPResult
+type ModifyDNResponse struct {
+	LDAPResult
+}
 
 //
 //        CompareRequest ::= [APPLICATION 14] SEQUENCE {
@@ -682,7 +699,9 @@ type CompareRequest struct {
 //        CompareResponse ::= [APPLICATION 15] LDAPResult
 const TagCompareResponse = 15
 
-type CompareResponse LDAPResult
+type CompareResponse struct {
+	LDAPResult
+}
 
 //
 //        AbandonRequest ::= [APPLICATION 16] MessageID

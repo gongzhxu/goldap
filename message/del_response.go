@@ -16,14 +16,16 @@ func readDelResponse(bytes *Bytes) (ret DelResponse, err error) {
 		err = LdapError{fmt.Sprintf("readDelResponse:\n%s", err.Error())}
 		return
 	}
-	ret = DelResponse(res)
+	ret = DelResponse{
+		LDAPResult: res,
+	}
 	return
 }
 
 func (del DelResponse) write(bytes *Bytes) int {
-	return LDAPResult(del).writeTagged(bytes, classApplication, TagDelResponse)
+	return del.LDAPResult.writeTagged(bytes, classApplication, TagDelResponse)
 }
 
 func (del DelResponse) size() int {
-	return LDAPResult(del).sizeTagged(TagDelResponse)
+	return del.LDAPResult.sizeTagged(TagDelResponse)
 }

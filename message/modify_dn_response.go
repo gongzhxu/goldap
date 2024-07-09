@@ -11,18 +11,20 @@ func readModifyDNResponse(bytes *Bytes) (ret ModifyDNResponse, err error) {
 		err = LdapError{fmt.Sprintf("readModifyDNResponse:\n%s", err.Error())}
 		return
 	}
-	ret = ModifyDNResponse(res)
+	ret = ModifyDNResponse{
+		LDAPResult: res,
+	}
 	return
 }
 
 //
 //        ModifyDNResponse ::= [APPLICATION 13] LDAPResult
 func (m ModifyDNResponse) write(bytes *Bytes) int {
-	return LDAPResult(m).writeTagged(bytes, classApplication, TagModifyDNResponse)
+	return m.LDAPResult.writeTagged(bytes, classApplication, TagModifyDNResponse)
 }
 
 //
 //        ModifyDNResponse ::= [APPLICATION 13] LDAPResult
 func (m ModifyDNResponse) size() int {
-	return LDAPResult(m).sizeTagged(TagModifyDNResponse)
+	return m.LDAPResult.sizeTagged(TagModifyDNResponse)
 }

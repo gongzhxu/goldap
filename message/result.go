@@ -177,6 +177,9 @@ func (l LDAPResult) write(bytes *Bytes) (size int) {
 	size += bytes.WriteTagAndLength(classUniversal, isCompound, tagSequence, size)
 	return
 }
+func (l LDAPResult) controls() Controls {
+	return l.Controls
+}
 func (l LDAPResult) writeComponents(bytes *Bytes) (size int) {
 	if l.referral != nil {
 		size += l.referral.writeTagged(bytes, classContextSpecific, TagLDAPResultReferral)

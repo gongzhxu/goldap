@@ -16,13 +16,15 @@ func readAddResponse(bytes *Bytes) (ret AddResponse, err error) {
 		err = LdapError{fmt.Sprintf("readAddResponse:\n%s", err.Error())}
 		return
 	}
-	ret = AddResponse(res)
+	ret = AddResponse{
+		LDAPResult: res,
+	}
 	return
 }
 
 func (a AddResponse) size() int {
-	return LDAPResult(a).sizeTagged(TagAddResponse)
+	return a.LDAPResult.sizeTagged(TagAddResponse)
 }
 func (a AddResponse) write(bytes *Bytes) int {
-	return LDAPResult(a).writeTagged(bytes, classApplication, TagAddResponse)
+	return a.LDAPResult.writeTagged(bytes, classApplication, TagAddResponse)
 }

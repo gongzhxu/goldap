@@ -10,6 +10,13 @@ import (
 //             controlType             LDAPOID,
 //             criticality             BOOLEAN DEFAULT FALSE,
 //             controlValue            OCTET STRING OPTIONAL }
+func NewControl(controlType LDAPOID, criticality BOOLEAN, controlValue OCTETSTRING) Control {
+	return Control{
+		controlType:  controlType,
+		criticality:  criticality,
+		controlValue: &controlValue,
+	}
+}
 
 func (control *Control) ControlType() LDAPOID {
 	return control.controlType

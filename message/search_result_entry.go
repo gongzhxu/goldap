@@ -49,6 +49,11 @@ func (s SearchResultEntry) size() (size int) {
 	size += sizeTagAndLength(tagSequence, size)
 	return
 }
+
+func (s SearchResultEntry) controls() Controls {
+	return s.Controls
+}
+
 func (s *SearchResultEntry) SetObjectName(on string) {
 	s.objectName = LDAPDN(on)
 }
